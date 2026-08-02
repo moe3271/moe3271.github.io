@@ -327,6 +327,18 @@
   .sound .dot{width:8px;height:8px;border-radius:50%;background:#3a352c;transition:all .4s}
   .sound.on .dot{background:var(--gold);box-shadow:0 0 12px var(--gold);animation:sndpulse 1.6s ease-in-out infinite}
   @keyframes sndpulse{0%,100%{opacity:.6}50%{opacity:1}}
+  .jazz{
+    position:fixed;bottom:154px;inset-inline-end:30px;z-index:101;
+    display:flex;align-items:center;gap:12px;
+    cursor:pointer;background:rgba(11,10,9,.85);backdrop-filter:blur(8px);
+    border:1px solid var(--hairline);border-radius:40px;
+    padding:12px 22px;color:var(--gold);
+    font-family:'Cairo',sans-serif;font-size:.8rem;letter-spacing:.1em;font-weight:400;
+    transition:all .3s;
+  }
+  .jazz:hover{border-color:var(--gold)}
+  .jazz .note-ic{font-size:.9rem;line-height:1;opacity:.45;transition:opacity .4s}
+  .jazz.on .note-ic{opacity:1;animation:sndpulse 1.6s ease-in-out infinite}
   /* ---------------- comparison table ---------------- */
   .cmp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table.cmp{
@@ -365,6 +377,7 @@
     .wa{bottom:104px}
     .lights{bottom:104px}
     .sound{bottom:166px}
+    .jazz{bottom:228px}
   }
   /* ---------------- responsive ---------------- */
   @media(max-width:680px){
@@ -754,6 +767,11 @@
 
 <div id="dimmer"></div>
 
+<button class="jazz" id="jazzBtn" onclick="toggleJazz()" aria-label="Jazz music toggle">
+  <span class="note-ic">&#9835;</span>
+  <span id="jazzLabel">جاز هادئ</span>
+</button>
+
 <button class="sound" id="sndBtn" onclick="toggleSound()" aria-label="Fire sound toggle">
   <span class="dot"></span>
   <span id="soundLabel">صوت النار</span>
@@ -849,6 +867,7 @@ function toggleLang(){
   });
   setLightsLabel();
   setSoundLabel();
+  setJazzLabel();
 }
 /* ---------- lights off ---------- */
 let off = false;
@@ -863,6 +882,24 @@ function toggleLights(){
   setLightsLabel();
 }
 
+/* ---------- soft jazz (royalty-free: Denis Pavlov Music via Pixabay) ---------- */
+let jazzAudio = null, jazzOn = false;
+function setJazzLabel(){
+  const L = document.getElementById('jazzLabel');
+  if(lang === 'ar') L.textContent = jazzOn ? 'إيقاف الجاز' : 'جاز هادئ';
+  else L.textContent = jazzOn ? 'Jazz off' : 'Soft jazz';
+}
+function toggleJazz(){
+  if(!jazzAudio){
+    jazzAudio = new Audio('jazz.mp3');
+    jazzAudio.loop = true;
+    jazzAudio.volume = 0.45;
+  }
+  jazzOn = !jazzOn;
+  document.getElementById('jazzBtn').classList.toggle('on', jazzOn);
+  if(jazzOn) jazzAudio.play().catch(()=>{}); else jazzAudio.pause();
+  setJazzLabel();
+}
 /* ---------- fire crackle sound (WebAudio, no files) ---------- */
 let actx = null, sndOn = false, sndTimer = null, master = null, rumbleGain = null;
 function setSoundLabel(){

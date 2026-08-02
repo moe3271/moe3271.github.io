@@ -312,6 +312,60 @@
   .faq details[open] summary::after{transform:rotate(45deg)}
   .faq summary:hover{color:var(--gold)}
   .faq details p{color:var(--stone);font-size:.9rem;padding:0 0 26px;max-width:640px}
+
+  /* ---------------- sound toggle ---------------- */
+  .sound{
+    position:fixed;bottom:92px;inset-inline-end:30px;z-index:101;
+    display:flex;align-items:center;gap:12px;
+    cursor:pointer;background:rgba(11,10,9,.85);backdrop-filter:blur(8px);
+    border:1px solid var(--hairline);border-radius:40px;
+    padding:12px 22px;color:var(--gold);
+    font-family:'Cairo',sans-serif;font-size:.8rem;letter-spacing:.1em;font-weight:400;
+    transition:all .3s;
+  }
+  .sound:hover{border-color:var(--gold)}
+  .sound .dot{width:8px;height:8px;border-radius:50%;background:#3a352c;transition:all .4s}
+  .sound.on .dot{background:var(--gold);box-shadow:0 0 12px var(--gold);animation:sndpulse 1.6s ease-in-out infinite}
+  @keyframes sndpulse{0%,100%{opacity:.6}50%{opacity:1}}
+  /* ---------------- comparison table ---------------- */
+  .cmp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.cmp{
+    width:100%;min-width:640px;border-collapse:collapse;
+    font-size:.9rem;font-weight:300;
+  }
+  .cmp th{
+    font-size:.7rem;letter-spacing:.3em;color:var(--gold);font-weight:400;
+    text-transform:uppercase;padding:18px 14px;text-align:start;
+    border-bottom:1px solid var(--hairline);white-space:nowrap;
+  }
+  .cmp td{
+    padding:22px 14px;border-bottom:1px solid rgba(201,169,106,.1);
+    color:var(--stone);vertical-align:middle;
+  }
+  .cmp td.pname{color:var(--ivory);font-family:'Amiri',serif;font-size:1.05rem;white-space:nowrap}
+  [dir="ltr"] .cmp td.pname{font-family:'Cormorant Garamond',serif}
+  .cmp td.pprice{color:var(--gold);letter-spacing:.08em;white-space:nowrap}
+  .cmp tr:hover td{color:var(--ivory)}
+  .cmp tr:hover td.pprice{color:var(--gold)}
+  /* ---------------- sticky mobile order bar ---------------- */
+  .mbar{
+    position:fixed;left:0;right:0;bottom:0;z-index:98;
+    display:none;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(11,10,9,.92);backdrop-filter:blur(12px);
+    border-top:1px solid var(--hairline);
+    transform:translateY(110%);transition:transform .45s cubic-bezier(.2,.6,.2,1);
+  }
+  .mbar.show{transform:none}
+  .mbar a{
+    display:block;text-align:center;background:var(--gold);color:var(--black);
+    padding:15px;font-size:.95rem;letter-spacing:.14em;font-weight:600;text-decoration:none;
+  }
+  @media(max-width:680px){
+    .mbar{display:block}
+    .wa{bottom:104px}
+    .lights{bottom:104px}
+    .sound{bottom:166px}
+  }
   /* ---------------- responsive ---------------- */
   @media(max-width:680px){
     .nav-links a:not(.lang){display:none}
@@ -520,6 +574,29 @@
   <p class="collection-note" data-i="cNote">توصيل لجميع المحافظات · الدفع عند الاستلام · استبدال خلال ١٤ يومًا</p>
 </section>
 
+
+<section id="compare" style="padding-top:0">
+  <div class="sec-head">
+    <span class="eyebrow" data-i="cmpE">قارن بين القطع</span>
+    <h2 class="display" data-i="cmpT">أي وهجٍ يناسب بيتك؟</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="cmp-wrap">
+    <table class="cmp">
+      <thead><tr>
+        <th data-i="thP">القطعة</th><th data-i="thS">المقاس التقريبي</th><th data-i="thW">التشغيل</th><th data-i="thR">الأنسب لـ</th><th data-i="thPr">السعر</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="pname" data-i="p5n">وعاء الجمر</td><td>24 × 14 cm</td><td data-i="r5w">بطاريات</td><td data-i="r5r">الطاولات الجانبية والأركان</td><td class="pprice" data-i="p5p">٨٤٩ جنيه</td></tr>
+        <tr><td class="pname" data-i="p3n">فانوس وهج الكلاسيكي</td><td>13 × 30 cm</td><td data-i="r3w">USB أو بطاريات</td><td data-i="r3r">غرف النوم والشرفات</td><td class="pprice" data-i="p3p">٩٤٩ جنيه</td></tr>
+        <tr><td class="pname" data-i="p1n">المدفأة الدائرية</td><td>Ø 26 cm</td><td data-i="r1w">USB أو بطاريات</td><td data-i="r1r">الأرفف والمكاتب الحديثة</td><td class="pprice" data-i="p1p">١٬٠٩٩ جنيه</td></tr>
+        <tr><td class="pname" data-i="p4n">مدفأة المكتب المودرن</td><td>32 × 20 cm</td><td data-i="r4w">USB</td><td data-i="r4r">المكاتب وطاولات القهوة</td><td class="pprice" data-i="p4p">١٬٣٩٩ جنيه</td></tr>
+        <tr><td class="pname" data-i="p2n">مدفأة الطوب الكبرى</td><td>38 × 30 cm</td><td data-i="r2w">USB أو بطاريات</td><td data-i="r2r">الصالون والريسبشن</td><td class="pprice" data-i="p2p">٢٬٤٩٩ جنيه</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 <div class="values" id="values">
   <div class="values-inner">
     <div class="value">
@@ -677,6 +754,15 @@
 
 <div id="dimmer"></div>
 
+<button class="sound" id="sndBtn" onclick="toggleSound()" aria-label="Fire sound toggle">
+  <span class="dot"></span>
+  <span id="soundLabel">صوت النار</span>
+</button>
+
+<div class="mbar" id="mbar">
+  <a href="#order" data-i="mbarCta">اطلب الآن — الدفع عند الاستلام</a>
+</div>
+
 <button class="lights" onclick="toggleLights()" aria-label="Lights toggle">
   <span class="bulb"></span>
   <span id="lightsLabel">أطفئ النور</span>
@@ -734,6 +820,14 @@ const T = {
     q4a:"Yes — inspect your piece first, then pay the courier in cash or via InstaPay. We never ask for advance payment.",
     q5:"What if the piece arrives damaged?",
     q5a:"We replace it immediately at no cost within 14 days of delivery — message us a photo and we arrange the exchange.",
+    cmpE:"COMPARE THE PIECES", cmpT:"Which glow suits your home?",
+    thP:"Piece", thS:"Approx. Size", thW:"Power", thR:"Best For", thPr:"Price",
+    r1w:"USB or batteries", r1r:"Shelves & modern desks",
+    r2w:"USB or batteries", r2r:"Living rooms & receptions",
+    r3w:"USB or batteries", r3r:"Bedrooms & balconies",
+    r4w:"USB", r4r:"Desks & coffee tables",
+    r5w:"Batteries", r5r:"Side tables & cozy corners",
+    mbarCta:"Order Now — Cash on Delivery",
     announce:"Nationwide delivery · Cash on delivery · Free Cairo & Giza shipping over EGP 1,500",
     bandE:"IN YOUR HOME",
     bandT:"Every evening deserves this warmth",
@@ -754,6 +848,7 @@ function toggleLang(){
     if(T[lang][k] !== undefined) e.innerHTML = T[lang][k];
   });
   setLightsLabel();
+  setSoundLabel();
 }
 /* ---------- lights off ---------- */
 let off = false;
@@ -767,6 +862,62 @@ function toggleLights(){
   document.body.classList.toggle('off', off);
   setLightsLabel();
 }
+
+/* ---------- fire crackle sound (WebAudio, no files) ---------- */
+let actx = null, sndOn = false, sndTimer = null, master = null, rumbleGain = null;
+function setSoundLabel(){
+  const L = document.getElementById('soundLabel');
+  if(lang === 'ar') L.textContent = sndOn ? 'إيقاف الصوت' : 'صوت النار';
+  else L.textContent = sndOn ? 'Sound off' : 'Fire sound';
+}
+function crackleOnce(){
+  const dur = 0.015 + Math.random() * 0.055;
+  const buf = actx.createBuffer(1, Math.floor(actx.sampleRate * dur), actx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 2.2);
+  const src = actx.createBufferSource(); src.buffer = buf;
+  const bp = actx.createBiquadFilter(); bp.type = 'bandpass';
+  bp.frequency.value = 700 + Math.random() * 2800; bp.Q.value = 0.7;
+  const g = actx.createGain(); g.gain.value = 0.05 + Math.random() * 0.22;
+  src.connect(bp); bp.connect(g); g.connect(master); src.start();
+}
+function crackleLoop(){
+  if(!sndOn) return;
+  crackleOnce();
+  if(Math.random() < 0.35) setTimeout(() => sndOn && crackleOnce(), 25 + Math.random() * 70);
+  sndTimer = setTimeout(crackleLoop, 70 + Math.random() * 380);
+}
+function toggleSound(){
+  if(!actx){
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    master = actx.createGain(); master.gain.value = 0.7; master.connect(actx.destination);
+    const len = actx.sampleRate * 2.5;
+    const nb = actx.createBuffer(1, len, actx.sampleRate);
+    const nd = nb.getChannelData(0); let last = 0;
+    for(let i = 0; i < len; i++){ const w = Math.random() * 2 - 1; last = (last + 0.02 * w) / 1.02; nd[i] = last * 3.5; }
+    const rum = actx.createBufferSource(); rum.buffer = nb; rum.loop = true;
+    const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 260;
+    rumbleGain = actx.createGain(); rumbleGain.gain.value = 0;
+    rum.connect(lp); lp.connect(rumbleGain); rumbleGain.connect(master); rum.start();
+  }
+  if(actx.state === 'suspended') actx.resume();
+  sndOn = !sndOn;
+  document.getElementById('sndBtn').classList.toggle('on', sndOn);
+  rumbleGain.gain.setTargetAtTime(sndOn ? 0.055 : 0, actx.currentTime, 0.4);
+  if(sndOn) crackleLoop(); else clearTimeout(sndTimer);
+  setSoundLabel();
+}
+/* ---------- sticky mobile order bar ---------- */
+(function(){
+  const bar = document.getElementById('mbar');
+  const orderSec = document.getElementById('order');
+  window.addEventListener('scroll', () => {
+    const past = window.scrollY > window.innerHeight * 0.7;
+    const r = orderSec.getBoundingClientRect();
+    const onForm = r.top < window.innerHeight && r.bottom > 0;
+    bar.classList.toggle('show', past && !onForm);
+  }, {passive: true});
+})();
 /* ---------- order form ---------- */
 function sendOrder(e){
   e.preventDefault();
@@ -791,7 +942,7 @@ function sendOrder(e){
 })();
 /* ---------- reveal on scroll ---------- */
 (function(){
-  const targets = document.querySelectorAll('.sec-head, .piece, .value, .step, .statement blockquote, .statement cite, .faq details, .order-form, .band-inner, .collection-note');
+  const targets = document.querySelectorAll('.sec-head, .piece, .value, .step, .statement blockquote, .statement cite, .faq details, .order-form, .band-inner, .collection-note, .cmp-wrap');
   targets.forEach(t => t.classList.add('reveal'));
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });

@@ -1104,6 +1104,7 @@ function openProduct(piece, src){
   document.getElementById('lbImg').src = src;
   document.getElementById('lbName').innerHTML = g('h3');
   document.getElementById('lbDims').innerHTML = g('.dims');
+  document.getElementById('lbDesc').innerHTML = g('.note');
   document.getElementById('lbPrice').innerHTML = g('.price');
   const o = piece.querySelector('a.order'), lo = document.getElementById('lbOrder');
   if(o && o.getAttribute('href') && o.getAttribute('href').indexOf('wa.me') !== -1){
@@ -1112,13 +1113,27 @@ function openProduct(piece, src){
   document.getElementById('lb').style.display = 'flex';
 }
 (function(){
-  document.querySelectorAll('.piece .frame img').forEach(el => {
-    el.style.cursor = 'zoom-in';
-    el.addEventListener('click', () => openProduct(el.closest('.piece'), el.src));
-  });
-  document.querySelectorAll('.piece .frame video').forEach(el => {
-    el.style.cursor = 'zoom-in';
-    el.addEventListener('click', () => openProduct(el.closest('.piece'), el.getAttribute('poster')));
+  function mediaSrc(piece){
+    const img = piece.querySelector('.frame img');
+    if(img) return img.src;
+    const vid = piece.querySelector('.frame video');
+    if(vid) return vid.getAttribute('poster');
+    const svg = piece.querySelector('.frame svg');
+    if(svg){
+      try { return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg.outerHTML))); }
+      catch(err){ return null; }
+    }
+    return null;
+  }
+  document.querySelectorAll('.piece').forEach(piece => {
+    const frame = piece.querySelector('.frame');
+    if(frame && frame.getAttribute('onclick')) return; // lantern gateway keeps its own action
+    piece.style.cursor = 'zoom-in';
+    piece.addEventListener('click', (e) => {
+      if(e.target.closest('a')) return; // order links pass through
+      const src = mediaSrc(piece);
+      if(src) openProduct(piece, src);
+    });
   });
 })();
 /* ---------- reveal on scroll ---------- */
@@ -1136,6 +1151,7 @@ function openProduct(piece, src){
     <img id="lbImg" style="max-width:92vw;max-height:64vh;border:1px solid rgba(201,169,106,.45)" alt="">
     <div id="lbName" style="color:#f2ead9;font-size:1.5rem;margin-top:20px;font-weight:400"></div>
     <div id="lbDims" style="color:#8d8272;font-size:.85rem;letter-spacing:.14em;margin-top:8px"></div>
+    <div id="lbDesc" style="color:#b9ac97;font-size:.92rem;max-width:520px;margin:10px auto 0;line-height:1.8"></div>
     <div id="lbPrice" style="color:#c9a96a;font-size:1.1rem;letter-spacing:.1em;margin-top:12px"></div>
     <a id="lbOrder" href="#" style="display:inline-block;margin-top:18px;color:#f2ead9;text-decoration:none;font-size:.85rem;letter-spacing:.2em;padding-bottom:7px;border-bottom:1px solid #c9a96a"></a>
     <div style="margin-top:22px"><span style="color:#8d8272;font-size:.75rem;letter-spacing:.2em;cursor:pointer" onclick="document.getElementById('lb').style.display='none'">✕ إغلاق</span></div>
